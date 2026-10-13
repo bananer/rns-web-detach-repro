@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Text, View } from 'react-native';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+// The screen should fill the area below the header with light blue.
+function Home() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home screen content</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// http://localhost:8081/            detachInactiveScreens={false}: the screen collapses to one line of text.
+// http://localhost:8081/?detach=true detachInactiveScreens={true}: the screen fills the viewport.
+const detachInactiveScreens =
+  new URLSearchParams(window.location.search).get('detach') === 'true';
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator detachInactiveScreens={detachInactiveScreens}>
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
